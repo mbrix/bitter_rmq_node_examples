@@ -10,6 +10,19 @@ var BloomFilter = require('bloom-filter');
 // unique_name will be used on subsequent rpc calls
 // QueueName is the queue that this utxo set will publish updates to
 
+// Queue Created Response
+/*
+{
+  "result": {
+    "utxo_id": "satoshidice_utxoset",
+    "queue": "response_queue"
+  },
+  "id": "0.868943422799930.250088789034634830.8864006067160517",
+  "error": null
+}
+
+*/
+
 amqp.connect('amqp://localhost', function(err, conn) {
   conn.createChannel(function(err, ch) {
       
@@ -25,8 +38,9 @@ amqp.connect('amqp://localhost', function(err, conn) {
 
       ch.consume(q.queue, function(msg) {
         if (msg.properties.correlationId == corr) {
-          console.log(' [.] Got %s', msg.content.toString());
-          setTimeout(function() { conn.close(); process.exit(0) }, 500);
+        	var x = JSON.parse(msg.content.toString());
+        	console.log(' [.] Got %s', JSON.stringify(x, null, 2));
+        	setTimeout(function() { conn.close(); process.exit(0) }, 500);
         }
       }, {noAck: true});
 

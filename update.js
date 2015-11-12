@@ -12,6 +12,33 @@ var BloomFilter = require('bloom-filter');
 // i.e filter.toObject()
 // https://github.com/bitpay/bloom-filter
 
+
+// Inactive UTXO set
+
+/*
+{
+  "id": "0.68134818505495790.26844571740366520.2591961605940014",
+  "error": {
+    "message": "Specified utxo set is not active.",
+    "code": 1
+  }
+*/
+
+// Positive Response
+
+/*
+{
+  "result": {
+    "utxo_id": "satoshidice_utxoset",
+    "status": "active",
+    "bloom_filter_updated": true
+  },
+  "id": "0.83908523432910440.72819676483049990.5446719732135534",
+  "error": null
+}
+*/
+
+
 amqp.connect('amqp://localhost', function(err, conn) {
   conn.createChannel(function(err, ch) {
       
@@ -28,8 +55,9 @@ amqp.connect('amqp://localhost', function(err, conn) {
 
       ch.consume(q.queue, function(msg) {
         if (msg.properties.correlationId == corr) {
-          console.log(' [.] Got %s', msg.content.toString());
-          setTimeout(function() { conn.close(); process.exit(0) }, 500);
+        	var x = JSON.parse(msg.content.toString());
+        	console.log(' [.] Got %s', JSON.stringify(x, null, 2));
+        	setTimeout(function() { conn.close(); process.exit(0) }, 500);
         }
       }, {noAck: true});
 

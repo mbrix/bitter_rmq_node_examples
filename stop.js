@@ -10,6 +10,20 @@ var amqp = require('amqplib/callback_api');
 // parameters: ['unique_name']
 // The only parameter is the unique name
 
+// Queue stopped response
+
+/*
+{
+  "result": {
+    "utxo_id": "satoshidice_utxoset",
+    "status": "stopped"
+  },
+  "id": "0.481126019498333330.75929114152677360.4090469521470368",
+  "error": null
+}
+
+*/
+
 amqp.connect('amqp://localhost', function(err, conn) {
   conn.createChannel(function(err, ch) {
       
@@ -17,7 +31,8 @@ amqp.connect('amqp://localhost', function(err, conn) {
       var corr = generateUuid();
       ch.consume(q.queue, function(msg) {
         if (msg.properties.correlationId == corr) {
-          console.log(' [.] Got %s', msg.content.toString());
+        	var x = JSON.parse(msg.content.toString());
+        	console.log(' [.] Got %s', JSON.stringify(x, null, 2));
           setTimeout(function() { conn.close(); process.exit(0) }, 500);
         }
       }, {noAck: true});
