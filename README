@@ -1,0 +1,15 @@
+%%% Ember Financial (c)
+
+
+npm install amqplib
+npm install bloom-filter
+
+--- Fast Tutorial ---
+
+node ping
+node connect
+node subscribe
+node unspents
+node update
+node stop
+
