@@ -45,9 +45,10 @@ amqp.connect('amqp://localhost', function(err, conn) {
       }, {noAck: true});
 
 	  // Start the utxo set at block 176781, the first appearance of SatoshiDice 48%
+	  // On testnet lets start at a different blockhash, 000000000000624f06c69d3a9fe8d25e0a9030569128d63ad1b704bbb3059a16
 	  QueueObj = {method: 'connect_utxo', id: corr,
 	  	  params: ['satoshidice_utxoset',
-	  	  	  '00000000000002b5fb13b7662a3b3e9b937e3ae9cf2fb8fb89f1358bf7385ca6',
+	  	  	  '000000000000624f06c69d3a9fe8d25e0a9030569128d63ad1b704bbb3059a16',
 	  	  	  filter.toObject(),
 	  	  	  'response_queue']},
 
